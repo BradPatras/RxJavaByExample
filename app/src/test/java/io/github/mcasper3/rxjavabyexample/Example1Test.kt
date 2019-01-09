@@ -17,20 +17,8 @@ class Example1Test {
     fun getListOfUsers_returnsCorrectlyConvertedUsers() {
         val dataSource = createDataSource(
             listOf(
-                UserDbModel(
-                    "Test",
-                    "Tester",
-                    LocationDbModel("New York", "NY", "USA"),
-                    "555-5555-5555",
-                    "test.tester@test.test"
-                ),
-                UserDbModel(
-                    "Stephen",
-                    "Doe",
-                    LocationDbModel("San Diego", "CA", "USA"),
-                    "555-123-4567",
-                    "youthoughtthiswasreal@test.test"
-                )
+                TEST_TESTER_DB,
+                STEPHEN_DOE_DB
             )
         )
 
@@ -38,20 +26,8 @@ class Example1Test {
             .test()
             .assertValue(
                 listOf(
-                    UserUiModel(
-                        "Test Tester",
-                        "TT",
-                        "New York, NY, USA",
-                        "555-555-5555",
-                        "test.tester@test.test"
-                    ),
-                    UserUiModel(
-                        "Stephen Doe",
-                        "SD",
-                        "San Diego, CA, USA",
-                        "555-123-4567",
-                        "youthoughtthiswasreal@test.test"
-                    )
+                    TEST_TESTER_UI,
+                    STEPHEN_DOE_UI
                 )
             )
 
@@ -62,34 +38,10 @@ class Example1Test {
     fun getListOfUsersInCity_returnsCorrectlyConvertedUsersBasedOnCity() {
         val dataSource = createDataSource(
             listOf(
-                UserDbModel(
-                    "Test",
-                    "Tester",
-                    LocationDbModel("New York", "NY", "USA"),
-                    "555-5555-5555",
-                    "test.tester@test.test"
-                ),
-                UserDbModel(
-                    "Stephen",
-                    "Doe",
-                    LocationDbModel("San Diego", "CA", "USA"),
-                    "555-123-4567",
-                    "youthoughtthiswasreal@test.test"
-                ),
-                UserDbModel(
-                    "New",
-                    "Person",
-                    LocationDbModel("New York", "NY", "USA"),
-                    "555-213-3243",
-                    "testing@test.test"
-                ),
-                UserDbModel(
-                    "Steve",
-                    "Stevenson",
-                    LocationDbModel("New York", "CA", "USA"),
-                    "555-343-2351",
-                    "something@test.test"
-                )
+                TEST_TESTER_DB,
+                STEPHEN_DOE_DB,
+                NEW_PERSON_DB,
+                STEVE_STEVENSON_DB
             )
         )
 
@@ -98,27 +50,9 @@ class Example1Test {
             .test()
             .assertValue(
                 listOf(
-                    UserUiModel(
-                        "Test Tester",
-                        "TT",
-                        "New York, NY, USA",
-                        "555-555-5555",
-                        "test.tester@test.test"
-                    ),
-                    UserUiModel(
-                        "New Person",
-                        "NP",
-                        "New York, NY, USA",
-                        "555-213-3243",
-                        "testing@test.test"
-                    ),
-                    UserUiModel(
-                        "Steve Evenson",
-                        "SE",
-                        "New York, CA, USA",
-                        "555-343-2351",
-                        "something@test.test"
-                    )
+                    TEST_TESTER_UI,
+                    NEW_PERSON_UI,
+                    STEVE_STEVENSON_UI
                 )
             )
         verify(dataSource).getUsers()
@@ -128,69 +62,15 @@ class Example1Test {
     fun getListOfUsersInStateOrderedByLastName_returnsCorrectListOfUsers() {
         val dataSource = createDataSource(
             listOf(
-                UserDbModel(
-                    "Test",
-                    "Tester",
-                    LocationDbModel("New York", "NY", "USA"),
-                    "555-5555-5555",
-                    "test.tester@test.test"
-                ),
-                UserDbModel(
-                    "Stephen",
-                    "Doe",
-                    LocationDbModel("San Diego", "CA", "USA"),
-                    "555-123-4567",
-                    "youthoughtthiswasreal@test.test"
-                ),
-                UserDbModel(
-                    "New",
-                    "Person",
-                    LocationDbModel("New York", "NY", "USA"),
-                    "555-213-3243",
-                    "testing@test.test"
-                ),
-                UserDbModel(
-                    "Steve",
-                    "Stevenson",
-                    LocationDbModel("New York", "NY", "USA"),
-                    "555-343-2351",
-                    "something@test.test"
-                ),
-                UserDbModel(
-                    "Randy",
-                    "Aarons",
-                    LocationDbModel("San Diego", "NY", "USA"),
-                    "555-123-4567",
-                    "youthoughtthiswasreal@test.test"
-                ),
-                UserDbModel(
-                    "Some",
-                    "Doels",
-                    LocationDbModel("New York", "NY", "USA"),
-                    "555-213-3243",
-                    "testing@test.test"
-                ),
-                UserDbModel(
-                    "Steve",
-                    "Stevens",
-                    LocationDbModel("New York", "NY", "USA"),
-                    "555-343-2351",
-                    "something@test.test"
-                ),
-                UserDbModel(
-                    "Randy",
-                    "Jokes",
-                    LocationDbModel("San Diego", "NE", "USA"),
-                    "555-123-4567",
-                    "youthoughtthiswasreal@test.test"
-                ),
-                UserDbModel(
-                    "Some",
-                    "Someone",
-                    LocationDbModel("New York", "PA", "USA"),
-                    "555-213-3243",
-                    "testing@test.test"
-                )
+                TEST_TESTER_DB,
+                STEPHEN_DOE_DB,
+                NEW_PERSON_DB,
+                STEVE_STEVENSON_DB,
+                RANDY_AARONS_DB,
+                SOME_DOELS_DB,
+                STEVE_STEVENS_DB,
+                RANDY_JOKES_DB,
+                SOME_SOMEONE_DB
             )
         )
 
@@ -199,41 +79,11 @@ class Example1Test {
             .test()
             .assertValue(
                 listOf(
-                    UserUiModel(
-                        "Randy Aarons",
-                        "RA",
-                        "San Diego, NY, USA",
-                        "555-123-4567",
-                        "youthoughtthiswasreal@test.test"
-                    ),
-                    UserUiModel(
-                        "Some Doels",
-                        "SD",
-                        "New York, NY, USA",
-                        "555-213-3243",
-                        "testing@test.test"
-                    ),
-                    UserUiModel(
-                        "New Person",
-                        "NP",
-                        "New York, NY, USA",
-                        "555-213-3243",
-                        "testing@test.test"
-                    ),
-                    UserUiModel(
-                        "Steve, Stevens",
-                        "SS",
-                        "New York, NY, USA",
-                        "555-343-2351",
-                        "something@test.test"
-                    ),
-                    UserUiModel(
-                        "Steve, Stevenson",
-                        "SS",
-                        "New York, NY, USA",
-                        "555-343-2351",
-                        "something@test.test"
-                    )
+                    RANDY_AARONS_UI,
+                    SOME_DOELS_UI,
+                    NEW_PERSON_UI,
+                    STEVE_STEVENS_UI,
+                    STEVE_STEVENSON_UI
                 )
             )
 
@@ -260,5 +110,121 @@ class Example1Test {
                 if ("main" == Thread.currentThread().name) throw NetworkOnMainThreadException()
             }
         }
+    }
+
+    companion object {
+        private val TEST_TESTER_DB = UserDbModel(
+            "Test",
+            "Tester",
+            LocationDbModel("New York", "NY", "USA"),
+            "555-5555-5555",
+            "test.tester@test.test"
+        )
+        private val STEPHEN_DOE_DB = UserDbModel(
+            "Stephen",
+            "Doe",
+            LocationDbModel("San Diego", "CA", "USA"),
+            "555-123-4567",
+            "youthoughtthiswasreal@test.test"
+        )
+        private val NEW_PERSON_DB = UserDbModel(
+            "New",
+            "Person",
+            LocationDbModel("New York", "NY", "USA"),
+            "555-213-3243",
+            "testing@test.test"
+        )
+        private val STEVE_STEVENSON_DB = UserDbModel(
+            "Steve",
+            "Stevenson",
+            LocationDbModel("New York", "CA", "USA"),
+            "555-343-2351",
+            "something@test.test"
+        )
+        private val RANDY_AARONS_DB = UserDbModel(
+            "Randy",
+            "Aarons",
+            LocationDbModel("San Diego", "NY", "USA"),
+            "555-123-4567",
+            "youthoughtthiswasreal@test.test"
+        )
+        private val SOME_DOELS_DB = UserDbModel(
+            "Some",
+            "Doels",
+            LocationDbModel("New York", "NY", "USA"),
+            "555-213-3243",
+            "testing@test.test"
+        )
+        private val STEVE_STEVENS_DB = UserDbModel(
+            "Steve",
+            "Stevens",
+            LocationDbModel("New York", "NY", "USA"),
+            "555-343-2351",
+            "something@test.test"
+        )
+        private val RANDY_JOKES_DB = UserDbModel(
+            "Randy",
+            "Jokes",
+            LocationDbModel("San Diego", "NE", "USA"),
+            "555-123-4567",
+            "youthoughtthiswasreal@test.test"
+        )
+        private val SOME_SOMEONE_DB = UserDbModel(
+            "Some",
+            "Someone",
+            LocationDbModel("New York", "PA", "USA"),
+            "555-213-3243",
+            "testing@test.test"
+        )
+
+        private val TEST_TESTER_UI = UserUiModel(
+            "Test Tester",
+            "TT",
+            "New York, NY, USA",
+            "555-555-5555",
+            "test.tester@test.test"
+        )
+        private val STEPHEN_DOE_UI = UserUiModel(
+            "Stephen Doe",
+            "SD",
+            "San Diego, CA, USA",
+            "555-123-4567",
+            "youthoughtthiswasreal@test.test"
+        )
+        private val NEW_PERSON_UI = UserUiModel(
+            "New Person",
+            "NP",
+            "New York, NY, USA",
+            "555-213-3243",
+            "testing@test.test"
+        )
+        private val STEVE_STEVENSON_UI = UserUiModel(
+            "Steve Stevenson",
+            "SE",
+            "New York, CA, USA",
+            "555-343-2351",
+            "something@test.test"
+        )
+        private val RANDY_AARONS_UI = UserUiModel(
+            "Randy Aarons",
+            "RA",
+            "San Diego, NY, USA",
+            "555-123-4567",
+            "youthoughtthiswasreal@test.test"
+        )
+        private val SOME_DOELS_UI = UserUiModel(
+            "Some Doels",
+            "SD",
+            "New York, NY, USA",
+            "555-213-3243",
+            "testing@test.test"
+        )
+        private val STEVE_STEVENS_UI = UserUiModel(
+            "Steve Stevens",
+            "SS",
+            "New York, NY, USA",
+            "555-343-2351",
+            "something@test.test"
+        )
     }
 }
