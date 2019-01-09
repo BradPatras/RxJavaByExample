@@ -10,5 +10,5 @@ class Example1(private val dataSource: DataSource) {
 
     fun getListOfUsersInStateOrderedByLastName(state: String): Observable<List<UserUiModel>> = TODO()
 
-    fun getListOfUsersAndCompaniesInState(state: String): Observable<Pair<List<UserUiModel>, List<CompanyDbModel>>> = TODO()
+    fun getListOfUsersAndCompaniesInState(state: String): Observable<Pair<List<UserUiModel>, List<CompanyUiModel>>> = TODO()
 }

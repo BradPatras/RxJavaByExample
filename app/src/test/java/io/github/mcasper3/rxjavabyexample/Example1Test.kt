@@ -3,6 +3,7 @@ package io.github.mcasper3.rxjavabyexample
 import android.os.NetworkOnMainThreadException
 import com.nhaarman.mockitokotlin2.verify
 import io.github.mcasper3.rxjavabyexample.example1.CompanyDbModel
+import io.github.mcasper3.rxjavabyexample.example1.CompanyUiModel
 import io.github.mcasper3.rxjavabyexample.example1.DataSource
 import io.github.mcasper3.rxjavabyexample.example1.Example1
 import io.github.mcasper3.rxjavabyexample.example1.LocationDbModel
@@ -88,6 +89,47 @@ class Example1Test {
             )
 
         verify(dataSource).getUsers()
+    }
+
+    @Test
+    fun getListOfUsersAndCompaniesInState_returnsCorrectListOfUsersAndCompanies() {
+        val dataSource = createDataSource(
+            listOf(
+                RANDY_AARONS_DB,
+                STEPHEN_DOE_DB,
+                NEW_PERSON_DB,
+                STEVE_STEVENSON_DB,
+                SOME_DOELS_DB,
+                RANDY_JOKES_DB
+            ),
+            listOf(
+                CompanyDbModel("Best Company", LocationDbModel("Best City", "NY", "USA"), "555-555-5555"),
+                CompanyDbModel("Other Company", LocationDbModel("New York", "CA", "USA"), "555-355-5555"),
+                CompanyDbModel("Fake Company", LocationDbModel("Testing", "CA", "USA"), "555-555-5513"),
+                CompanyDbModel("Michaela Inc.", LocationDbModel("Las Vegas", "CA", "USA"), "555-816-5918"),
+                CompanyDbModel("Da Bears", LocationDbModel("Philly", "PA", "USA"), "555-513-5555"),
+                CompanyDbModel("Easy Life", LocationDbModel("County", "AK", "USA"), "555-513-5555")
+            )
+        )
+
+        val users = listOf(
+            STEPHEN_DOE_UI,
+            STEVE_STEVENSON_UI
+        )
+        val cities = listOf(
+            CompanyUiModel("Other Company", "New York, CA, USA", "555-355-5555"),
+            CompanyUiModel("Fake Company", "Testing, CA, USA", "555-555-5513"),
+            CompanyUiModel("Michaela Inc.", "Las Vegas, CA, USA", "555-816-5918")
+        )
+        val expected = users to cities
+
+        Example1(dataSource)
+            .getListOfUsersAndCompaniesInState("CA")
+            .test()
+            .assertValue(expected)
+
+        verify(dataSource).getUsers()
+        verify(dataSource).getGetCompanies()
     }
 
     private fun createDataSource(
