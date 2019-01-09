@@ -1,7 +1,8 @@
 package io.github.mcasper3.rxjavabyexample
 
-import android.os.NetworkOnMainThreadException
+import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.verify
+import com.nhaarman.mockitokotlin2.whenever
 import io.github.mcasper3.rxjavabyexample.example1.CompanyDbModel
 import io.github.mcasper3.rxjavabyexample.example1.CompanyUiModel
 import io.github.mcasper3.rxjavabyexample.example1.DataSource
@@ -52,8 +53,7 @@ class Example1Test {
             .assertValue(
                 listOf(
                     TEST_TESTER_UI,
-                    NEW_PERSON_UI,
-                    STEVE_STEVENSON_UI
+                    NEW_PERSON_UI
                 )
             )
         verify(dataSource).getUsers()
@@ -100,7 +100,8 @@ class Example1Test {
                 NEW_PERSON_DB,
                 STEVE_STEVENSON_DB,
                 SOME_DOELS_DB,
-                RANDY_JOKES_DB
+                RANDY_JOKES_DB,
+                TEST_TESTER_DB
             ),
             listOf(
                 CompanyDbModel("Best Company", LocationDbModel("Best City", "NY", "USA"), "555-555-5555"),
@@ -114,7 +115,7 @@ class Example1Test {
 
         val users = listOf(
             STEPHEN_DOE_UI,
-            STEVE_STEVENSON_UI
+            TEST_TESTER_UI
         )
         val cities = listOf(
             CompanyUiModel("Other Company", "New York, CA, USA", "555-355-5555"),
@@ -129,28 +130,18 @@ class Example1Test {
             .assertValue(expected)
 
         verify(dataSource).getUsers()
-        verify(dataSource).getGetCompanies()
+        verify(dataSource).getCompanies()
     }
 
     private fun createDataSource(
-        usersToReturn: List<UserDbModel> = throw IllegalAccessError(),
-        companiesToReturn: List<CompanyDbModel> = throw IllegalAccessError()
+        usersToReturn: List<UserDbModel> = emptyList(),
+        companiesToReturn: List<CompanyDbModel> = emptyList()
     ): DataSource {
-        return object : DataSource {
-            override fun getUsers(): Observable<List<UserDbModel>> {
-                crashIfMainThread()
-                return Observable.just(usersToReturn)
-            }
-
-            override fun getGetCompanies(): Observable<List<CompanyDbModel>> {
-                crashIfMainThread()
-                return Observable.just(companiesToReturn)
-            }
-
-
-            private fun crashIfMainThread() {
-                if ("main" == Thread.currentThread().name) throw NetworkOnMainThreadException()
-            }
+        return mock<DataSource>().apply {
+            whenever(getUsers())
+                .thenReturn(Observable.just(usersToReturn))
+            whenever(getCompanies())
+                .thenReturn(Observable.just(companiesToReturn))
         }
     }
 
@@ -158,8 +149,8 @@ class Example1Test {
         private val TEST_TESTER_DB = UserDbModel(
             "Test",
             "Tester",
-            LocationDbModel("New York", "NY", "USA"),
-            "555-5555-5555",
+            LocationDbModel("New York", "CA", "USA"),
+            "555-555-5555",
             "test.tester@test.test"
         )
         private val STEPHEN_DOE_DB = UserDbModel(
@@ -179,7 +170,7 @@ class Example1Test {
         private val STEVE_STEVENSON_DB = UserDbModel(
             "Steve",
             "Stevenson",
-            LocationDbModel("New York", "CA", "USA"),
+            LocationDbModel("Other City", "NY", "USA"),
             "555-343-2351",
             "something@test.test"
         )
@@ -222,7 +213,7 @@ class Example1Test {
         private val TEST_TESTER_UI = UserUiModel(
             "Test Tester",
             "TT",
-            "New York, NY, USA",
+            "New York, CA, USA",
             "555-555-5555",
             "test.tester@test.test"
         )
@@ -242,8 +233,8 @@ class Example1Test {
         )
         private val STEVE_STEVENSON_UI = UserUiModel(
             "Steve Stevenson",
-            "SE",
-            "New York, CA, USA",
+            "SS",
+            "Other City, NY, USA",
             "555-343-2351",
             "something@test.test"
         )

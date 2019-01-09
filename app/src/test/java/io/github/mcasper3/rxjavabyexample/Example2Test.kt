@@ -15,12 +15,15 @@ import java.util.concurrent.TimeUnit
 
 class Example2Test {
 
+    private val numbers = (1..60).chunked(5)
+    private var current = 0
+
     @Test
     fun getAggregateMaxAgeOfUserGroups_returnsCorrectAge() {
         val dataSource = createDataSource()
         val example2 = Example2(dataSource)
 
-        example2.getAggregateMaxAgeOfUserGroups(listOf(USER_GROUP_1, USER_GROUP_2, USER_GROUP_3, USER_GROUP_4))
+        example2.getAggregateMaxAgeOfUserGroups(listOf(USER_GROUP_1, USER_GROUP_2, USER_GROUP_3, USER_GROUP_4, USER_GROUP_5))
             .test()
             .assertValue(244)
 
@@ -41,12 +44,18 @@ class Example2Test {
         example2.getAggregate(testScheduler)
             .subscribe(testObserver)
 
+        whenever(dataSource.getNextFiveNumbers())
+            .thenReturn(numbers[current++])
         testScheduler.advanceTimeBy(5, TimeUnit.SECONDS)
         testObserver.assertValues(15)
+        whenever(dataSource.getNextFiveNumbers())
+            .thenReturn(numbers[current++])
         testScheduler.advanceTimeBy(5, TimeUnit.SECONDS)
         testObserver.assertValues(15, 55)
         testScheduler.advanceTimeBy(3, TimeUnit.SECONDS)
         testObserver.assertValues(15, 55)
+        whenever(dataSource.getNextFiveNumbers())
+            .thenReturn(numbers[current++])
         testScheduler.advanceTimeBy(5, TimeUnit.SECONDS)
         testObserver.assertValues(15, 55, 120)
 
@@ -54,9 +63,6 @@ class Example2Test {
     }
 
     private fun createDataSource(): DataSource {
-        val numbers = (1..60).chunked(5)
-        var current = 0
-
         return mock<DataSource>().apply {
             whenever(getUsersInGroup(USER_GROUP_1))
                 .thenReturn(
@@ -104,9 +110,6 @@ class Example2Test {
                 )
             whenever(getUsersInGroup(USER_GROUP_5))
                 .thenReturn(Observable.just(emptyList()))
-
-            whenever(getNextFiveNumbers())
-                .thenReturn(numbers[current++])
         }
     }
 

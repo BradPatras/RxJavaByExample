@@ -6,5 +6,5 @@ interface DataSource {
 
     fun getUsers(): Observable<List<UserDbModel>>
 
-    fun getGetCompanies(): Observable<List<CompanyDbModel>>
+    fun getCompanies(): Observable<List<CompanyDbModel>>
 }
